@@ -1,0 +1,7 @@
+name 'pg_bouncer'
+maintainer 'Jeffrey Hulten'
+maintainer_email 'jhulten@gmail.com'
+license 'apache2'
+description 'Installs/Configures pg_bouncer'
+long_description 'Installs/Configures pg_bouncer'
+version '0.1.0'
