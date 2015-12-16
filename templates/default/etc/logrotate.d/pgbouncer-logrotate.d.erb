@@ -1,6 +1,6 @@
 # Rotate postgresql log files
 
-<%= @log_dir %>/pgbouncer-<%= @instance_name %>.log {
+<%= @instance['log_dir'] %>/pgbouncer-<%= @name %>.log {
   daily
   copytruncate
   missingok
@@ -9,6 +9,6 @@
   compress
   sharedscripts
   postrotate
-    /bin/kill -HUP `cat <%= @pid_dir %>/pgbouncer-<%= @instance_name %>.pid 2>/dev/null` 2> /dev/null || true
+    /bin/kill -HUP `cat <%= @instance['pid_dir'] %>/pgbouncer-<%= @name %>.pid 2>/dev/null` 2> /dev/null || true
   endscript
 }

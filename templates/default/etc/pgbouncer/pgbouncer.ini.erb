@@ -1,39 +1,39 @@
 [databases]
-<% @databases.each do |database| %>
-<%= database[:db_alias] %> = <%= "host='#{database[:db_host]}' " unless database[:db_host].nil? || database[:db_host].empty? %>port=<%= database[:db_port] %> dbname=<%= database[:db_name] %> <%= "connect_query='#{@connect_query}'" unless @connect_query.nil? || @connect_query.empty? %>
+<% @instance['databases'].each do |dbname, database| %>
+<%= database[:alias] %> = <%= "host='#{database[:host]}' " unless database[:host].nil? || database[:host].empty? %>port=<%= database[:port] %> dbname=<%= dbname %> <%= "connect_query='#{@instance['connect_query']}'" unless @instance['connect_query'].nil? || @instance['connect_query'].empty? %>
 <% end %>
 
 [pgbouncer]
 
-logfile = <%= @log_dir %>/pgbouncer-<%= @instance_name %>.log
-pidfile = <%= @pid_dir %>/pgbouncer-<%= @instance_name %>.pid
+logfile = <%= @instance['log_dir'] %>/pgbouncer-<%= @name %>.log
+pidfile = <%= @instance['pid_dir'] %>/pgbouncer-<%= @name %>.pid
 
-<%= ";" if @listen_addr.nil? || @listen_addr.empty? %>listen_addr = <%= @listen_addr %>
-<%= ";" if @listen_port.nil? || @listen_port.empty? %>listen_port = <%= @listen_port %>
+<%= ";" if @instance['listen_addr'].nil? || @instance['listen_addr'].empty? %>listen_addr = <%= @instance['listen_addr'] %>
+<%= ";" if @instance['listen_port'].nil? || @instance['listen_port'].empty? %>listen_port = <%= @instance['listen_port'] %>
 
-unix_socket_dir = <%= "#{@socket_dir}/" unless @socket_dir.empty? %>
+unix_socket_dir = <%= "#{@instance['socket_dir']}/" unless @instance['socket_dir'].empty? %>
 
-auth_type = <%= @auth_type %>
-auth_file = /etc/pgbouncer/userlist-<%= @instance_name %>.txt
+auth_type = <%= @instance['auth_type'] %>
+auth_file = /etc/pgbouncer/userlist-<%= @name %>.txt
 
-admin_users = <%= @admin_users.join(',') %>
-stats_users = <%= @stats_users.join(',') %>
+admin_users = <%= @instance['admin_users'].join(',') %>
+stats_users = <%= @instance['stats_users'].join(',') %>
 
-pool_mode = <%= @pool_mode %>
+pool_mode = <%= @instance['pool_mode'] %>
 
-server_reset_query = <%= @server_reset_query %>
+server_reset_query = <%= @instance['server_reset_query'] %>
 
-max_client_conn = <%= @max_client_conn %>
-default_pool_size = <%= @default_pool_size %>
-min_pool_size = <%= @min_pool_size %>
-reserve_pool_size = <%= @reserve_pool_size %>
-server_round_robin = <%= @server_round_robin %>
-server_idle_timeout = <%= @server_idle_timeout %>
+max_client_conn = <%= @instance['max_client_conn'] %>
+default_pool_size = <%= @instance['default_pool_size'] %>
+min_pool_size = <%= @instance['min_pool_size'] %>
+reserve_pool_size = <%= @instance['reserve_pool_size'] %>
+server_round_robin = <%= @instance['server_round_robin'] %>
+server_idle_timeout = <%= @instance['server_idle_timeout'] %>
 
-tcp_keepalive = <%= @tcp_keepalive %>
-<%= defined?(@tcp_keepidle) ? "tcp_keepidle = #{@tcp_keepidle}" : ";tcp_keepidle = 0" %>
-<%= defined?(@tcp_keepintvl) ? "tcp_keepintvl = #{@tcp_keepintvl}" : ";tcp_keepintvl = 0" %>
+tcp_keepalive = <%= @instance['tcp_keepalive'] %>
+<%= defined?(@instance['tcp_keepidle']) ? "tcp_keepidle = #{@instance['tcp_keepidle']}" : ";tcp_keepidle = 0" %>
+<%= defined?(@instance['tcp_keepintvl']) ? "tcp_keepintvl = #{@instance['tcp_keepintvl']}" : ";tcp_keepintvl = 0" %>
 
-<% @additional.each do |key, value| %>
+<% @instance['additional'].each do |key, value| %>
 <%= key %> = <%= value %>
 <% end %>

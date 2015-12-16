@@ -1,18 +1,18 @@
-description "PgBouncer PostgreSQL connection pool for db alias <%= @instance_name %>"
+description "PgBouncer PostgreSQL connection pool for db alias <%= @name %>"
 start on runlevel [2345]
 stop on runlevel [!2345]
 
 env USER=<%= @user %>
-env RUNDIR=<%= @pid_dir %>
+env RUNDIR=<%= @instance['pid_dir'] %>
 env DAEMON="/usr/sbin/pgbouncer"
-env DAEMON_OPTS="-d -R /etc/pgbouncer/pgbouncer-<%= @instance_name %>.ini"
+env DAEMON_OPTS="-d -R /etc/pgbouncer/pgbouncer-<%= @name %>.ini"
 
 pre-start script
     mkdir -p $RUNDIR || true
     chown $USER:$USER $RUNDIR || true
 end script
 
-limit nofile <%= @soft_limit %> <%= @hard_limit %>
+limit nofile <%= @instance['soft_limit'] %> <%= @instance['hard_limit'] %>
 expect daemon
 respawn
 

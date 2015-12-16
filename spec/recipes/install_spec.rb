@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: pg_bouncer
-# Recipe:: default
+# Spec:: install
 #
 # The MIT License (MIT)
 #
@@ -24,19 +24,38 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-package 'pgbouncer' do
-  action node['pg_bouncer']['upgrade'] ? [:install, :upgrade] : [:install]
-end
+require 'spec_helper'
 
-directory '/etc/pgbouncer' do
-  action :create
-  recursive true
-  mode 0775
-end
+describe 'pg_bouncer::install' do
+  context 'When all attributes are default, on an unspecified platform' do
+    let(:runner) { ChefSpec::ServerRunner.new }
+    subject { runner.converge(described_recipe) }
 
-group node['pg_bouncer']['group']
+    it { is_expected.to install_package('pgbouncer') }
+    it { is_expected.to upgrade_package('pgbouncer') }
 
-user node['pg_bouncer']['user'] do
-  gid node['pg_bouncer']['group']
-  system true
+    it { is_expected.to create_directory('/etc/pgbouncer') }
+
+    it { is_expected.to create_user('pgbouncer') }
+    it { is_expected.to create_group('pgbouncer') }
+    
+  end
+
+  context 'When auto-upgrade is disabled' do
+    let(:runner) do
+      ChefSpec::ServerRunner.new do |node|
+        node.set['pg_bouncer']['upgrade'] = false
+        node.set['pg_bouncer']['user'] = 'pguser'
+        node.set['pg_bouncer']['group'] = 'pggroup'
+      end
+    end
+    subject { runner.converge(described_recipe) }
+
+    it { is_expected.to install_package('pgbouncer') }
+    it { is_expected.not_to upgrade_package('pgbouncer') }
+    
+    it { is_expected.to create_user('pguser') }
+    it { is_expected.to create_group('pggroup') }
+    
+  end
 end

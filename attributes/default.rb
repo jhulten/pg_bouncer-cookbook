@@ -1,13 +1,13 @@
 default['pg_bouncer']['upgrade'] = true
+default['pg_bouncer']['user'] = 'pgbouncer'
+default['pg_bouncer']['group'] = 'pgbouncer'
 
 instance_defaults = {
-  databases: [],
+  databases: {},
   userlist: {},
   auth_type: 'md5',
   listen_addr: "#{node['ipaddress']}",
   listen_port: '6432',
-  user: 'pgbouncer',
-  group: 'pgbouncer',
   log_dir: '/var/log/pgbouncer',
   socket_dir: '/etc/pgbouncer/db_sockets',
   pid_dir: '/var/run/pgbouncer',
@@ -28,6 +28,7 @@ instance_defaults = {
   soft_limit: 65_000,
   hard_limit: 65_000,
   rotate_logs: true,
+  service_state: [:enable, :start],
   additional: {}
 }
 

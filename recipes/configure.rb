@@ -23,3 +23,54 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+
+if node['pg_bouncer']['instances'].empty?
+  log 'pg_bouncer instances hash is empty. No instances will be configured' do
+    level :warn
+  end
+end
+
+node['pg_bouncer']['instances'].each do |name, inst|
+
+  # merge with instance_defaults
+  inst = node['pg_bouncer']['instance_defaults'].merge(inst)
+  
+  # create the log, pid, and application socket directories
+  [
+    'log_dir',
+    'pid_dir',
+    'socket_dir'
+  ].each do |dir|
+    directory inst[dir] do
+      action :create
+      recursive true
+      owner inst['user']
+      group inst['group']
+      mode 0775
+    end
+  end
+
+  # build the userlist, pgbouncer.ini, upstart conf and logrotate.d templates
+  {
+    "/etc/pgbouncer/userlist-#{name}.txt" => 'etc/pgbouncer/userlist.txt.erb',
+    "/etc/pgbouncer/pgbouncer-#{name}.ini" => 'etc/pgbouncer/pgbouncer.ini.erb',
+    "/etc/init/pgbouncer-#{name}.conf" => 'etc/init/pgbouncer.conf.erb',
+    "/etc/logrotate.d/pgbouncer-#{name}" => 'etc/logrotate.d/pgbouncer-logrotate.d.erb'
+  }.each do |key, source_template|
+    template key.dup do
+      source source_template
+      owner inst['user']
+      group inst['group']
+      mode 0644
+      notifies :reload, "service[pgbouncer-#{name}]"
+      variables(name: name, instance: inst, user: node[:pg_bouncer][:user])
+    end
+  end
+
+  service "pgbouncer-#{name}" do
+    provider Chef::Provider::Service::Upstart
+    supports enable: true, start: true, restart: true, reload: true
+    action inst['service_state']
+  end
+
+end
