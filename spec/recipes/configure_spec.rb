@@ -36,7 +36,7 @@ describe 'pg_bouncer::configure' do
 
   let(:ini_file) { '/etc/pgbouncer/pgbouncer-test_instance.ini' }
   let(:user_file) { '/etc/pgbouncer/userlist-test_instance.txt' }
-  let(:logrotate_file) {'/etc/logrotate.d/pgbouncer-test_instance'}
+  let(:logrotate_file) { '/etc/logrotate.d/pgbouncer-test_instance' }
   let(:init_file) { '/etc/init/pgbouncer-test_instance.conf' }
 
   subject { runner.converge(described_recipe) }
@@ -49,27 +49,46 @@ describe 'pg_bouncer::configure' do
             alias: 'dbalias',
             port: 1234
           }
-        }, 
+        },
         userlist: { 'username' => 'pa55w0rd' }
       }
     end
 
     it { is_expected.to create_template(ini_file) }
-    it { is_expected.to render_file(ini_file).with_content(/^dbalias = port=1234 dbname=dbname *$/) }
-    
+    it do
+      is_expected.to render_file(ini_file)
+        .with_content(/^dbalias = port=1234 dbname=dbname *$/)
+    end
+
     it { is_expected.to create_template(user_file) }
-    it { is_expected.to render_file(user_file).with_content(/^"username" "pa55w0rd"$/) }
+    it do
+      is_expected.to render_file(user_file)
+        .with_content(/^"username" "pa55w0rd"$/)
+    end
 
     it { is_expected.to create_template(logrotate_file) }
-    it { is_expected.to render_file(logrotate_file).with_content(/^\/var\/log\/pgbouncer\/pgbouncer-test_instance.log/) }
-    
-    it { is_expected.to create_template(init_file) }
-    it { is_expected.to render_file(init_file).with_content(/^env USER=pgbouncer$/) }
-    it { is_expected.to render_file(init_file).with_content(/^env RUNDIR=\/var\/run\/pgbouncer$/) }
-    it { is_expected.to render_file(init_file).with_content(/^env DAEMON_OPTS="-d -R \/etc\/pgbouncer\/pgbouncer-test_instance.ini"$/) }
-    it { is_expected.to render_file(init_file).with_content(/^limit nofile 65000 65000$/) }
+    it do
+      is_expected.to render_file(logrotate_file)
+        .with_content(%r{^/var/log/pgbouncer/pgbouncer-test_instance.log})
+    end
 
-    
+    it { is_expected.to create_template(init_file) }
+    it do
+      is_expected.to render_file(init_file)
+        .with_content(/^env USER=pgbouncer$/)
+    end
+    it do
+      is_expected.to render_file(init_file)
+        .with_content(%r{^env RUNDIR=/var/run/pgbouncer$})
+    end
+    it do
+      is_expected.to render_file(init_file)
+        .with_content(%r{^env DAEMON_OPTS="-d -R /etc/pgbouncer/pgbouncer-test_instance.ini"$})
+    end
+    it do
+      is_expected.to render_file(init_file)
+        .with_content(/^limit nofile 65000 65000$/)
+    end
   end
   context 'With a single instance, overriding all settings' do
     let(:instance) do
@@ -80,7 +99,7 @@ describe 'pg_bouncer::configure' do
             alias: 'dbalias',
             port: 1234
           }
-        }, 
+        },
         userlist: { 'username' => 'pa55w0rd' },
         auth_type: 'md4',
         listen_addr: '9.9.9.9',
@@ -106,7 +125,7 @@ describe 'pg_bouncer::configure' do
         hard_limit: 64_001,
         rotate_logs: false,
         service_state: [:disable, :restart],
-        additional: {'additional_key' => 'additional_value'}        
+        additional: { 'additional_key' => 'additional_value' }
       }
     end
 
@@ -114,13 +133,13 @@ describe 'pg_bouncer::configure' do
     it { is_expected.to render_file(user_file).with_content(/^"username" "pa55w0rd"$/) }
     it { is_expected.to create_template(ini_file) }
     [
-      /^logfile = \/mnt\/log\/pgbouncer\/pgbouncer-test_instance.log$/,
-      /^pidfile = \/run\/pgbouncer\/pgbouncer-test_instance.pid$/,
+      %r{^logfile = /mnt/log/pgbouncer/pgbouncer-test_instance.log$},
+      %r{^pidfile = /run/pgbouncer/pgbouncer-test_instance.pid$},
       /^listen_addr = 9.9.9.9$/,
       /^listen_port = 4400$/,
-      /^unix_socket_dir = \/run\/pgbouncer\/db_sockets\/$/,
+      %r{^unix_socket_dir = /run/pgbouncer/db_sockets/$},
       /^auth_type = md4$/,
-      /^auth_file = \/etc\/pgbouncer\/userlist-test_instance.txt$/,
+      %r{^auth_file = /etc/pgbouncer/userlist-test_instance.txt$},
       /^dbalias = host='3.4.5.6' port=1234 dbname=dbname connect_query='CREATE TABLE Students;'$/,
       /^admin_users = pgbouncer_god$/,
       /^stats_users = pgbouncer_snitch$/,

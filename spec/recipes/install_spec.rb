@@ -38,7 +38,6 @@ describe 'pg_bouncer::install' do
 
     it { is_expected.to create_user('pgbouncer') }
     it { is_expected.to create_group('pgbouncer') }
-    
   end
 
   context 'When auto-upgrade is disabled' do
@@ -53,9 +52,8 @@ describe 'pg_bouncer::install' do
 
     it { is_expected.to install_package('pgbouncer') }
     it { is_expected.not_to upgrade_package('pgbouncer') }
-    
+
     it { is_expected.to create_user('pguser') }
     it { is_expected.to create_group('pggroup') }
-    
   end
 end

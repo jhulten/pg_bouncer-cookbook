@@ -31,16 +31,15 @@ if node['pg_bouncer']['instances'].empty?
 end
 
 node['pg_bouncer']['instances'].each do |name, inst|
-
   # merge with instance_defaults
   inst = node['pg_bouncer']['instance_defaults'].merge(inst)
-  
+
   # create the log, pid, and application socket directories
-  [
-    'log_dir',
-    'pid_dir',
-    'socket_dir'
-  ].each do |dir|
+  %w(
+    log_dir
+    pid_dir
+    socket_dir
+  ).each do |dir|
     directory inst[dir] do
       action :create
       recursive true
@@ -52,10 +51,14 @@ node['pg_bouncer']['instances'].each do |name, inst|
 
   # build the userlist, pgbouncer.ini, upstart conf and logrotate.d templates
   {
-    "/etc/pgbouncer/userlist-#{name}.txt" => 'etc/pgbouncer/userlist.txt.erb',
-    "/etc/pgbouncer/pgbouncer-#{name}.ini" => 'etc/pgbouncer/pgbouncer.ini.erb',
-    "/etc/init/pgbouncer-#{name}.conf" => 'etc/init/pgbouncer.conf.erb',
-    "/etc/logrotate.d/pgbouncer-#{name}" => 'etc/logrotate.d/pgbouncer-logrotate.d.erb'
+    "/etc/pgbouncer/userlist-#{name}.txt" =>
+    'etc/pgbouncer/userlist.txt.erb',
+    "/etc/pgbouncer/pgbouncer-#{name}.ini" =>
+    'etc/pgbouncer/pgbouncer.ini.erb',
+    "/etc/init/pgbouncer-#{name}.conf" =>
+    'etc/init/pgbouncer.conf.erb',
+    "/etc/logrotate.d/pgbouncer-#{name}" =>
+    'etc/logrotate.d/pgbouncer-logrotate.d.erb'
   }.each do |key, source_template|
     template key.dup do
       source source_template
@@ -72,5 +75,4 @@ node['pg_bouncer']['instances'].each do |name, inst|
     supports enable: true, start: true, restart: true, reload: true
     action inst['service_state']
   end
-
 end
