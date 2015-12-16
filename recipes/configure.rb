@@ -24,10 +24,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-if node['pg_bouncer']['instances'].empty?
-  log 'pg_bouncer instances hash is empty. No instances will be configured' do
-    level :warn
-  end
+log 'pg_bouncer instances hash is empty. No instances will be configured' do
+  level :warn
+  only_if { node['pg_bouncer']['instances'].empty? }
 end
 
 node['pg_bouncer']['instances'].each do |name, inst|
@@ -66,7 +65,7 @@ node['pg_bouncer']['instances'].each do |name, inst|
       group inst['group']
       mode 0644
       notifies :reload, "service[pgbouncer-#{name}]"
-      variables(name: name, instance: inst, user: node[:pg_bouncer][:user])
+      variables(name: name, instance: inst, user: node['pg_bouncer']['user'])
     end
   end
 

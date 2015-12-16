@@ -6,7 +6,7 @@ instance_defaults = {
   databases: {},
   userlist: {},
   auth_type: 'md5',
-  listen_addr: "#{node['ipaddress']}",
+  listen_addr: node['ipaddress'],
   listen_port: '6432',
   log_dir: '/var/log/pgbouncer',
   socket_dir: '/etc/pgbouncer/db_sockets',
