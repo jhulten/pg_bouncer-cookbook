@@ -6,6 +6,8 @@ addons:
       - chef-current-precise
     packages:
       - chefdk
+  code_climate:
+    repo_token: 6bd70ca3bfc92520ddd1e094526816a3104c15ddf96eb7932eb6d546dff3b107
 
 # Don't `bundle install`
 install: echo "skip bundle install"
@@ -14,7 +16,7 @@ install: echo "skip bundle install"
 before_script:
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
   # We have to install chef-sugar for ChefSpec
-  - /opt/chefdk/embedded/bin/chef gem install chef-sugar
+  - /opt/chefdk/embedded/bin/chef gem install chef-sugar codeclimate-test-reporter
 script:
   - /opt/chefdk/embedded/bin/chef --version
   - /opt/chefdk/embedded/bin/rubocop --version
