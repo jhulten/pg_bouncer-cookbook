@@ -16,31 +16,31 @@ recipe 'pg_bouncer::install', 'Install pgbouncer'
 recipe 'pg_bouncer::configure', 'Configure pgbouncer'
 
 attribute 'pg_bouncer/upgrade',
-  :display_name => 'Auto-Upgrade',
-  :description => 'Should the pgbouncer package be upgraded',
-  :type => 'boolean',
-  :recipes => [ 'pg_bouncer::install'],
-  :default => true
+          display_name: 'Auto-Upgrade',
+          description: 'Should the pgbouncer package be upgraded',
+          type: 'boolean',
+          recipes: ['pg_bouncer::install'],
+          default: true
 attribute 'pg_bouncer/user',
-  :display_name => 'Username',
-  :description => 'User for pgbouncer processes and files',
-  :type => 'string',
-  :recipes => [ 'pg_bouncer::install'],
-  :default => 'pgbouncer'
+          display_name: 'Username',
+          description: 'User for pgbouncer processes and files',
+          type: 'string',
+          recipes: ['pg_bouncer::install'],
+          default: 'pgbouncer'
 attribute 'pg_bouncer/group',
-  :display_name => 'Group Name',
-  :description => 'Group for the pgbouncer user',
-  :type => 'string',
-  :recipes => [ 'pg_bouncer::install'],
-  :default => true
+          display_name: 'Group Name',
+          description: 'Group for the pgbouncer user',
+          type: 'string',
+          recipes: ['pg_bouncer::install'],
+          default: true
 attribute 'pg_bouncer/instance_defaults',
-  :display_name => 'Instance Defaults',
-  :description => 'Default settings for instances',
-  :type => 'hash',
-  :recipes => [ 'pg_bouncer::configure']
+          display_name: 'Instance Defaults',
+          description: 'Default settings for instances',
+          type: 'hash',
+          recipes: ['pg_bouncer::configure']
 attribute 'pg_bouncer/instances',
-  :display_name => 'Instances',
-  :description => 'Hash of instance names and configuration',
-  :type => 'hash',
-  :recipes => [ 'pg_bouncer::configure'],
-  :default => {}
+          display_name: 'Instances',
+          description: 'Hash of instance names and configuration',
+          type: 'hash',
+          recipes: ['pg_bouncer::configure'],
+          default: {}
