@@ -54,42 +54,52 @@ describe 'pg_bouncer::configure' do
       }
     end
 
-    it { is_expected.to create_template(ini_file) }
-    it do
-      is_expected.to render_file(ini_file)
-        .with_content(/^dbalias = port=1234 dbname=dbname *$/)
-    end
 
     it { is_expected.to create_template(user_file) }
-    it do
-      is_expected.to render_file(user_file)
-        .with_content(/^"username" "pa55w0rd"$/)
-    end
+    it { is_expected.to render_file(user_file).with_content(/^"username" "pa55w0rd"$/) }
 
     it { is_expected.to create_template(logrotate_file) }
-    it do
-      is_expected.to render_file(logrotate_file)
-        .with_content(%r{^/var/log/pgbouncer/pgbouncer-test_instance.log})
-    end
+    it { is_expected.to render_file(logrotate_file).with_content(%r{^/var/log/pgbouncer/pgbouncer-test_instance.log}) }
 
     it { is_expected.to create_template(init_file) }
-    it do
-      is_expected.to render_file(init_file)
-        .with_content(/^env USER=pgbouncer$/)
+    [
+      /^env USER=pgbouncer$/,
+      %r{^env RUNDIR=/var/run/pgbouncer$},
+      %r{^env DAEMON_OPTS="-d -R /etc/pgbouncer/pgbouncer-test_instance.ini"$},
+      /^limit nofile 65000 65000$/
+    ].each do |regex|
+      it { is_expected.to render_file(init_file).with_content(regex) }
     end
-    it do
-      is_expected.to render_file(init_file)
-        .with_content(%r{^env RUNDIR=/var/run/pgbouncer$})
-    end
-    it do
-      is_expected.to render_file(init_file)
-        .with_content(%r{^env DAEMON_OPTS="-d -R /etc/pgbouncer/pgbouncer-test_instance.ini"$})
-    end
-    it do
-      is_expected.to render_file(init_file)
-        .with_content(/^limit nofile 65000 65000$/)
+
+
+    it { is_expected.to create_template(ini_file) }
+    [
+      /^dbalias = port=1234 dbname=dbname *$/,
+      %r{^logfile = /var/log/pgbouncer/pgbouncer-test_instance.log$},
+      %r{^pidfile = /var/run/pgbouncer/pgbouncer-test_instance.pid$},
+      /^listen_addr = 10.1.2.3$/,
+      /^listen_port = 6432$/,
+      %r{^unix_socket_dir = /etc/pgbouncer/db_sockets/$},
+      /^auth_type = md5$/,
+      %r{^auth_file = /etc/pgbouncer/userlist-test_instance.txt$},
+      /^admin_users = pgbouncer_admin$/,
+      /^stats_users = pgbouncer_monitor$/,
+      /^pool_mode = transaction$/,
+      /^server_reset_query = DISCARD ALL;$/,
+      /^max_client_conn = 60$/,
+      /^default_pool_size = 30$/,
+      /^min_pool_size = 10$/,
+      /^reserve_pool_size = 5$/,
+      /^server_round_robin = 1$/,
+      /^server_idle_timeout = 3600$/,
+      /^;tcp_keepalive = $/,
+      /^;tcp_keepidle = $/,
+      /^;tcp_keepintvl = $/,
+    ].each do |regex|
+      it { is_expected.to render_file(ini_file).with_content(regex) }
     end
   end
+
   context 'With a single instance, overriding all settings' do
     let(:instance) do
       {
