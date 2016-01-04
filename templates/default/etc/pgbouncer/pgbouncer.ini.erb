@@ -30,9 +30,9 @@ reserve_pool_size = <%= @instance['reserve_pool_size'] %>
 server_round_robin = <%= @instance['server_round_robin'] %>
 server_idle_timeout = <%= @instance['server_idle_timeout'] %>
 
-tcp_keepalive = <%= @instance['tcp_keepalive'] %>
-<%= defined?(@instance['tcp_keepidle']) ? "tcp_keepidle = #{@instance['tcp_keepidle']}" : ";tcp_keepidle = 0" %>
-<%= defined?(@instance['tcp_keepintvl']) ? "tcp_keepintvl = #{@instance['tcp_keepintvl']}" : ";tcp_keepintvl = 0" %>
+<%= defined?(@instance['tcp_keepalive']) || @instance['tcp_keepalive'] == 1 ? "tcp_keepalive = #{@instance['tcp_keepalive']}" : ";tcp_keepalive = 1" %>
+<%= defined?(@instance['tcp_keepidle']) || @instance['tcp_keepidle']   == 0 ? "tcp_keepidle = #{@instance['tcp_keepidle']}"   : ";tcp_keepidle = 0" %>
+<%= defined?(@instance['tcp_keepintvl']) || @instance['tcp_keepintvl'] == 0 ? "tcp_keepintvl = #{@instance['tcp_keepintvl']}" : ";tcp_keepintvl = 0" %>
 
 <% @instance['additional'].each do |key, value| %>
 <%= key %> = <%= value %>
