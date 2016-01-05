@@ -54,7 +54,6 @@ describe 'pg_bouncer::configure' do
       }
     end
 
-
     it { is_expected.to create_template(user_file) }
     it { is_expected.to render_file(user_file).with_content(/^"username" "pa55w0rd"$/) }
 
@@ -70,7 +69,6 @@ describe 'pg_bouncer::configure' do
     ].each do |regex|
       it { is_expected.to render_file(init_file).with_content(regex) }
     end
-
 
     it { is_expected.to create_template(ini_file) }
     [
@@ -94,7 +92,7 @@ describe 'pg_bouncer::configure' do
       /^server_idle_timeout = 3600$/,
       /^;tcp_keepalive = $/,
       /^;tcp_keepidle = $/,
-      /^;tcp_keepintvl = $/,
+      /^;tcp_keepintvl = $/
     ].each do |regex|
       it { is_expected.to render_file(ini_file).with_content(regex) }
     end
