@@ -29,6 +29,12 @@ log 'pg_bouncer instances hash is empty. No instances will be configured' do
   only_if { node['pg_bouncer']['instances'].empty? }
 end
 
+directory '/etc/pgbouncer' do
+  action :create
+  recursive true
+  mode 0775
+end
+
 node['pg_bouncer']['instances'].each do |name, inst|
   # merge with instance_defaults
   inst = node['pg_bouncer']['instance_defaults'].merge(inst)
