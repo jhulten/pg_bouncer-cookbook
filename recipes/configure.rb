@@ -70,7 +70,7 @@ node['pg_bouncer']['instances'].each do |name, inst|
       owner inst['user']
       group inst['group']
       mode 0644
-      notifies :reload, "service[pgbouncer-#{name}]"
+      notifies :reload, "service[pgbouncer-#{name}]", :delayed
       variables(name: name, instance: inst, user: node['pg_bouncer']['user'])
     end
   end
