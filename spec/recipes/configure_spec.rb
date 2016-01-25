@@ -54,6 +54,8 @@ describe 'pg_bouncer::configure' do
       }
     end
 
+    it { is_expected.to create_directory('/etc/pgbouncer') }
+
     it { is_expected.to create_template(user_file) }
     it { is_expected.to render_file(user_file).with_content(/^"username" "pa55w0rd"$/) }
 

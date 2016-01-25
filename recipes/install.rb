@@ -28,12 +28,6 @@ package 'pgbouncer' do
   action node['pg_bouncer']['upgrade'] ? [:install, :upgrade] : [:install]
 end
 
-directory '/etc/pgbouncer' do
-  action :create
-  recursive true
-  mode 0775
-end
-
 group node['pg_bouncer']['group']
 
 user node['pg_bouncer']['user'] do

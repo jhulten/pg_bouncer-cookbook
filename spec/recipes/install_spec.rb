@@ -34,8 +34,6 @@ describe 'pg_bouncer::install' do
     it { is_expected.to install_package('pgbouncer') }
     it { is_expected.to upgrade_package('pgbouncer') }
 
-    it { is_expected.to create_directory('/etc/pgbouncer') }
-
     it { is_expected.to create_user('pgbouncer') }
     it { is_expected.to create_group('pgbouncer') }
   end
