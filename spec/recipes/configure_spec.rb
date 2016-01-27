@@ -38,6 +38,8 @@ describe 'pg_bouncer::configure' do
   let(:user_file) { '/etc/pgbouncer/userlist-test_instance.txt' }
   let(:logrotate_file) { '/etc/logrotate.d/pgbouncer-test_instance' }
   let(:init_file) { '/etc/init/pgbouncer-test_instance.conf' }
+  let(:username) { 'pgbouncer' }
+  let(:groupname) { 'pgbouncer' }
 
   subject { runner.converge(described_recipe) }
 
@@ -56,11 +58,17 @@ describe 'pg_bouncer::configure' do
 
     it { is_expected.to create_directory('/etc/pgbouncer') }
 
+    it { is_expected.to create_directory('/var/log/pgbouncer').with(owner: username, group: groupname) }
+    it { is_expected.to create_directory('/etc/pgbouncer/db_sockets').with(owner: username, group: groupname) }
+    it { is_expected.to create_directory('/var/run/pgbouncer').with(owner: username, group: groupname) }
+
     it { is_expected.to create_template(user_file) }
+    it { is_expected.to create_template(user_file).with(owner: username, group: groupname) }
     it { is_expected.to render_file(user_file).with_content(/^"username" "pa55w0rd"$/) }
     it { expect(subject.template(user_file)).to notify('execute[reload pgbouncer-test_instance]').to(:run) }
 
     it { is_expected.to create_template(logrotate_file) }
+    it { is_expected.to create_template(logrotate_file).with(owner: username, group: groupname) }
     it { is_expected.to render_file(logrotate_file).with_content(%r{^/var/log/pgbouncer/pgbouncer-test_instance.log}) }
     it { expect(subject.template(logrotate_file)).to notify('execute[reload pgbouncer-test_instance]').to(:run) }
 
@@ -73,6 +81,7 @@ describe 'pg_bouncer::configure' do
     ].each do |regex|
       it { is_expected.to render_file(init_file).with_content(regex) }
     end
+    it { is_expected.to create_template(init_file).with(owner: username, group: groupname) }
     it { expect(subject.template(init_file)).to notify('execute[reload pgbouncer-test_instance]').to(:run) }
 
     it { is_expected.to create_template(ini_file) }
@@ -101,6 +110,7 @@ describe 'pg_bouncer::configure' do
     ].each do |regex|
       it { is_expected.to render_file(ini_file).with_content(regex) }
     end
+    it { is_expected.to create_template(ini_file).with(owner: username, group: groupname) }
     it { expect(subject.template(ini_file)).to notify('execute[reload pgbouncer-test_instance]').to(:run) }
   end
 
@@ -142,6 +152,10 @@ describe 'pg_bouncer::configure' do
         additional: { 'additional_key' => 'additional_value' }
       }
     end
+
+    it { is_expected.to create_directory('/mnt/log/pgbouncer').with(owner: username, group: groupname) }
+    it { is_expected.to create_directory('/run/pgbouncer/db_sockets').with(owner: username, group: groupname) }
+    it { is_expected.to create_directory('/run/pgbouncer').with(owner: username, group: groupname) }
 
     it { is_expected.to create_template(user_file) }
     it { is_expected.to render_file(user_file).with_content(/^"username" "pa55w0rd"$/) }

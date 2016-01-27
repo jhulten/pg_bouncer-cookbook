@@ -48,8 +48,8 @@ node['pg_bouncer']['instances'].each do |name, inst|
     directory inst[dir] do
       action :create
       recursive true
-      owner inst['user']
-      group inst['group']
+      owner node['pg_bouncer']['user']
+      group node['pg_bouncer']['group']
       mode 0775
     end
   end
@@ -67,11 +67,12 @@ node['pg_bouncer']['instances'].each do |name, inst|
   }.each do |key, source_template|
     template key.dup do
       source source_template
-      owner inst['user']
-      group inst['group']
+      owner node['pg_bouncer']['user']
+      group node['pg_bouncer']['group']
       mode 0644
       notifies :run, "execute[reload pgbouncer-#{name}]"
-      variables(name: name, instance: inst, user: node['pg_bouncer']['user'])
+      variables(name: name, instance: inst,
+                user: node['pg_bouncer']['user'], group: node['pg_bouncer']['group'])
     end
   end
 
