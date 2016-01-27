@@ -1,5 +1,16 @@
 # Change Log
 
+## [v1.0.3](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.0.3) (2016-01-27)
+[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.2...v1.0.3)
+
+**Closed issues:**
+
+- Logging directory permissions are borked. [\#6](https://github.com/jhulten/pg_bouncer-cookbook/issues/6)
+
+**Merged pull requests:**
+
+- Wrong parameters used in directory ownership [\#7](https://github.com/jhulten/pg_bouncer-cookbook/pull/7) ([jhulten](https://github.com/jhulten))
+
 ## [v1.0.2](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.0.2) (2016-01-27)
 [Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.1...v1.0.2)
 

@@ -4,7 +4,7 @@ maintainer_email 'jhulten@gmail.com'
 license 'Apache v2.0'
 description 'Installs/Configures pg_bouncer'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '1.0.2'
+version '1.0.3'
 
 source_url 'https://github.com/jhulten/pg_bouncer-cookbook'
 issues_url 'https://github.com/jhulten/pg_bouncer-cookbook/issues'
