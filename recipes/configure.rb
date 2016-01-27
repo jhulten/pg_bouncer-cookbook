@@ -70,9 +70,16 @@ node['pg_bouncer']['instances'].each do |name, inst|
       owner inst['user']
       group inst['group']
       mode 0644
-      notifies :reload, "service[pgbouncer-#{name}]", :delayed
+      notifies :run, "execute[reload pgbouncer-#{name}]"
       variables(name: name, instance: inst, user: node['pg_bouncer']['user'])
     end
+  end
+
+  execute "reload pgbouncer-#{name}" do # ~FC004
+    command "service pgbouncer-#{name} reload || service pgbouncer-#{name} start"
+    user 'root'
+    action :nothing
+    only_if { ::File.exist?("/etc/pgbouncer/pgbouncer-#{name}.ini") }
   end
 
   service "pgbouncer-#{name}" do
