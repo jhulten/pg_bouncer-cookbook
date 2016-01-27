@@ -1,11 +1,21 @@
 # Change Log
 
+## [v1.0.2](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.0.2) (2016-01-27)
+[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.1...v1.0.2)
+
+**Fixed bugs:**
+
+- Cannot reload a service we haven't started yet [\#3](https://github.com/jhulten/pg_bouncer-cookbook/issues/3)
+
+**Merged pull requests:**
+
+- Convert to execute based reload to ensure running [\#5](https://github.com/jhulten/pg_bouncer-cookbook/pull/5) ([jhulten](https://github.com/jhulten))
+
 ## [v1.0.1](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.0.1) (2016-01-25)
 [Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.0...v1.0.1)
 
 **Fixed bugs:**
 
-- Cannot reload a service we haven't started yet [\#3](https://github.com/jhulten/pg_bouncer-cookbook/issues/3)
 - /etc/pgbouncer directory not created [\#1](https://github.com/jhulten/pg_bouncer-cookbook/issues/1)
 
 **Merged pull requests:**
