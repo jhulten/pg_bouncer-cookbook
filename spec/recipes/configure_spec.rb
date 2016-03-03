@@ -41,9 +41,13 @@ describe 'pg_bouncer::configure' do
   let(:username) { 'pgbouncer' }
   let(:groupname) { 'pgbouncer' }
 
-  subject { runner.converge(described_recipe) }
+  subject { run }
 
   context 'With a single instance, taking all defaults' do
+    cached(:run) do
+      runner.converge(described_recipe)
+    end
+
     let(:instance) do
       {
         databases: {
@@ -115,6 +119,10 @@ describe 'pg_bouncer::configure' do
   end
 
   context 'With a single instance, overriding all settings' do
+    cached(:run) do
+      runner.converge(described_recipe)
+    end
+
     let(:instance) do
       {
         databases: {
