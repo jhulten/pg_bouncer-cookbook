@@ -25,6 +25,7 @@
 # THE SOFTWARE.
 
 package 'pgbouncer' do
+  version node['pg_bouncer']['version'] unless node['pg_bouncer']['version'].nil?
   action node['pg_bouncer']['upgrade'] ? [:install, :upgrade] : [:install]
 end
 
