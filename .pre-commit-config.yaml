@@ -1,10 +1,10 @@
 - repo: git://github.com/pre-commit/pre-commit-hooks
-  sha: ''  # Use the sha you want to point at
+  sha: 'master'  # Use the sha you want to point at
   hooks:
     - id: trailing-whitespace
     - id: check-yaml
-    - id: check-merge-conflicts
+    - id: check-merge-conflict
 - repo: git://github.com/pricematch/mirrors-rubocop
-  sha: ''  # Use the sha you want to point at
+  sha: '64f42a367'  # Use the sha you want to point at
   hooks:
     - id: rubocop
