@@ -29,8 +29,8 @@ require 'spec_helper'
 describe 'pg_bouncer::configure' do
   let(:runner) do
     ChefSpec::ServerRunner.new do |node|
-      node.automatic['ipaddress'] = '10.1.2.3'
-      node.set['pg_bouncer']['instances']['test_instance'] = instance
+      node.automatic['ipaddress'] = '10.1.2.3' # ~FC047
+      node.override['pg_bouncer']['instances']['test_instance'] = instance
     end
   end
 
