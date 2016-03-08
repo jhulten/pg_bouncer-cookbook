@@ -1,9 +1,21 @@
 # Change Log
 
+## [1.1.0](https://github.com/jhulten/pg_bouncer-cookbook/tree/1.1.0) (2016-03-07)
+[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.3...1.1.0)
+
+**Closed issues:**
+
+- Allow version pin for pgbouncer [\#14](https://github.com/jhulten/pg_bouncer-cookbook/issues/14)
+
+**Merged pull requests:**
+
+- Version pinning [\#18](https://github.com/jhulten/pg_bouncer-cookbook/pull/18) ([jhulten](https://github.com/jhulten))
+- Kitchen testing [\#17](https://github.com/jhulten/pg_bouncer-cookbook/pull/17) ([jhulten](https://github.com/jhulten))
+
 ## [v1.0.3](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.0.3) (2016-01-27)
 [Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.2...v1.0.3)
 
-**Closed issues:**
+**Fixed bugs:**
 
 - Logging directory permissions are borked. [\#6](https://github.com/jhulten/pg_bouncer-cookbook/issues/6)
 
