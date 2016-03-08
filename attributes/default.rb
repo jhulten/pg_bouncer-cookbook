@@ -1,4 +1,5 @@
 default['pg_bouncer']['upgrade'] = true
+default['pg_bouncer']['version'] = nil
 default['pg_bouncer']['user'] = 'pgbouncer'
 default['pg_bouncer']['group'] = 'pgbouncer'
 
