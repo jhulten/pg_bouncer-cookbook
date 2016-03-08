@@ -54,4 +54,15 @@ describe 'pg_bouncer::install' do
     it { is_expected.to create_user('pguser') }
     it { is_expected.to create_group('pggroup') }
   end
+
+  context 'When version is pinned' do
+    let(:runner) do
+      ChefSpec::ServerRunner.new do |node|
+        node.set['pg_bouncer']['version'] = '1.2.4-5'
+      end
+    end
+    subject { runner.converge(described_recipe) }
+
+    it { is_expected.to install_package('pgbouncer').with_version('1.2.4-5') }
+  end
 end
