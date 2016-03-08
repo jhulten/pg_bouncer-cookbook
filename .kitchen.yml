@@ -1,16 +1,74 @@
 ---
 driver:
-  name: vagrant
+  name: dokken
+  chef_version: 12.5.1
+  log_level: debug
+  privileged: true
+
+transport:
+  name: dokken
+  log_level: debug
 
 provisioner:
-  name: chef_zero
+  name: dokken
+  log_level: debug
+
+verifier:
+  name: inspec
 
 platforms:
   - name: ubuntu-12.04
-  - name: centos-6.5
+    driver:
+      image: ubuntu-upstart:12.04
+      pid_one_command: /sbin/init --verbose
+      intermediate_instructions:
+      - RUN /usr/bin/apt-get update
+      - RUN /usr/bin/apt-get install -y apt-transport-https
+  - name: ubuntu-14.04
+    driver:
+      image: ubuntu-upstart:14.04
+      pid_one_command: /sbin/init --verbose
+      intermediate_instructions:
+      - RUN /usr/bin/apt-get update
+      - RUN /usr/bin/apt-get install -y apt-transport-https
 
 suites:
   - name: default
     run_list:
-      - recipe[pg_bouncer::default]
+    - recipe[pg_bouncer::default]
+    attributes:
+      pg_bouncer:
+        instance_defaults:
+          pool_mode: session
+        instances:
+          kitchen01:
+            databases:
+              db1:
+                port: 1234
+                aliases: db1rw
+
+  - name: multi_instance
+    run_list:
+    - recipe[pg_bouncer::default]
+    attributes:
+      pg_bouncer:
+        instance_defaults:
+          min_pool_size: 10
+          userlist:
+            user1: password1
+        instances:
+          kitchen01:
+            databases:
+              db1:
+                aliases: db1_rw
+                port: 1234
+          kitchen02:
+            databases:
+              db2:
+                aliases: db2_rw
+                port: 2345
+
+  - name: multi_database
+    run_list:
+    - recipe[pg_bouncer::default]
     attributes:
