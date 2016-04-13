@@ -61,9 +61,7 @@ node['pg_bouncer']['instances'].each do |name, inst|
     "/etc/pgbouncer/pgbouncer-#{name}.ini" =>
     'etc/pgbouncer/pgbouncer.ini.erb',
     "/etc/init/pgbouncer-#{name}.conf" =>
-    'etc/init/pgbouncer.conf.erb',
-    "/etc/logrotate.d/pgbouncer-#{name}" =>
-    'etc/logrotate.d/pgbouncer-logrotate.d.erb'
+    'etc/init/pgbouncer.conf.erb'
   }.each do |key, source_template|
     template key.dup do
       source source_template
@@ -74,6 +72,15 @@ node['pg_bouncer']['instances'].each do |name, inst|
       variables(name: name, instance: inst,
                 user: node['pg_bouncer']['user'], group: node['pg_bouncer']['group'])
     end
+  end
+
+  template "/etc/logrotate.d/pgbouncer-#{name}" do
+    source 'etc/logrotate.d/pgbouncer-logrotate.d.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+    variables(name: name, instance: inst,
+              user: node['pg_bouncer']['user'], group: node['pg_bouncer']['group'])
   end
 
   execute "reload pgbouncer-#{name}" do # ~FC004
