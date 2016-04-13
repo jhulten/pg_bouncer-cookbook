@@ -41,8 +41,6 @@ describe 'pg_bouncer::configure' do
   let(:username) { 'pgbouncer' }
   let(:groupname) { 'pgbouncer' }
 
-  subject { runner.converge(described_recipe) }
-
   context 'With a single instance, taking all defaults' do
     let(:instance) do
       {
@@ -55,6 +53,9 @@ describe 'pg_bouncer::configure' do
         userlist: { 'username' => 'pa55w0rd' }
       }
     end
+
+    cached(:chef_run) { runner.converge(described_recipe) }
+    subject { chef_run }
 
     it { is_expected.to create_directory('/etc/pgbouncer') }
 
@@ -152,6 +153,9 @@ describe 'pg_bouncer::configure' do
         additional: { 'additional_key' => 'additional_value' }
       }
     end
+
+    cached(:chef_run) { runner.converge(described_recipe) }
+    subject { chef_run }
 
     it { is_expected.to create_directory('/mnt/log/pgbouncer').with(owner: username, group: groupname) }
     it { is_expected.to create_directory('/run/pgbouncer/db_sockets').with(owner: username, group: groupname) }

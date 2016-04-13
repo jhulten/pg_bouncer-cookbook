@@ -27,9 +27,10 @@
 require 'spec_helper'
 
 describe 'pg_bouncer::install' do
+  subject { chef_run }
+
   context 'When all attributes are default, on an unspecified platform' do
-    let(:runner) { ChefSpec::ServerRunner.new }
-    subject { runner.converge(described_recipe) }
+    cached(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
 
     it { is_expected.to install_package('pgbouncer') }
     it { is_expected.to upgrade_package('pgbouncer') }
@@ -39,14 +40,13 @@ describe 'pg_bouncer::install' do
   end
 
   context 'When auto-upgrade is disabled' do
-    let(:runner) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new do |node|
         node.set['pg_bouncer']['upgrade'] = false
         node.set['pg_bouncer']['user'] = 'pguser'
         node.set['pg_bouncer']['group'] = 'pggroup'
-      end
+      end.converge(described_recipe)
     end
-    subject { runner.converge(described_recipe) }
 
     it { is_expected.to install_package('pgbouncer') }
     it { is_expected.not_to upgrade_package('pgbouncer') }
@@ -56,12 +56,11 @@ describe 'pg_bouncer::install' do
   end
 
   context 'When version is pinned' do
-    let(:runner) do
+    cached(:chef_run) do
       ChefSpec::ServerRunner.new do |node|
         node.set['pg_bouncer']['version'] = '1.2.4-5'
-      end
+      end.converge(described_recipe)
     end
-    subject { runner.converge(described_recipe) }
 
     it { is_expected.to install_package('pgbouncer').with_version('1.2.4-5') }
   end
