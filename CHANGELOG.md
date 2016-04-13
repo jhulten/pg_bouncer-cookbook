@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.1.2](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.1.2) (2016-04-13)
+[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.1.1...v1.1.2)
+
+**Merged pull requests:**
+
+- Add su line to logrotate files [\#20](https://github.com/jhulten/pg_bouncer-cookbook/pull/20) ([jhulten](https://github.com/jhulten))
+
 ## [v1.1.1](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.1.1) (2016-04-13)
 [Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.1.0...v1.1.1)
 
