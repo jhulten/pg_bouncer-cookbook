@@ -68,9 +68,8 @@ describe 'pg_bouncer::configure' do
     it { expect(subject.template(user_file)).to notify('execute[reload pgbouncer-test_instance]').to(:run) }
 
     it { is_expected.to create_template(logrotate_file) }
-    it { is_expected.to create_template(logrotate_file).with(owner: username, group: groupname) }
+    it { is_expected.to create_template(logrotate_file).with(owner: 'root', group: 'root') }
     it { is_expected.to render_file(logrotate_file).with_content(%r{^/var/log/pgbouncer/pgbouncer-test_instance.log}) }
-    it { expect(subject.template(logrotate_file)).to notify('execute[reload pgbouncer-test_instance]').to(:run) }
 
     it { is_expected.to create_template(init_file) }
     [
