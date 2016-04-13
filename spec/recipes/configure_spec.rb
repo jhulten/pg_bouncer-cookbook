@@ -70,6 +70,7 @@ describe 'pg_bouncer::configure' do
     it { is_expected.to create_template(logrotate_file) }
     it { is_expected.to create_template(logrotate_file).with(owner: 'root', group: 'root') }
     it { is_expected.to render_file(logrotate_file).with_content(%r{^/var/log/pgbouncer/pgbouncer-test_instance.log}) }
+    it { is_expected.to render_file(logrotate_file).with_content(/su #{username} #{groupname}$/) }
 
     it { is_expected.to create_template(init_file) }
     [

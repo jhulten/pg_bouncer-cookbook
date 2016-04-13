@@ -2,6 +2,7 @@
 
 <%= @instance['log_dir'] %>/pgbouncer-<%= @name %>.log {
   daily
+  su <%= @user %> <%= @group %>
   copytruncate
   missingok
   start 0
