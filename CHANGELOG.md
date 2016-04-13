@@ -1,7 +1,14 @@
 # Change Log
 
-## [1.1.0](https://github.com/jhulten/pg_bouncer-cookbook/tree/1.1.0) (2016-03-07)
-[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.3...1.1.0)
+## [v1.1.1](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.1.1) (2016-04-13)
+[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.1.0...v1.1.1)
+
+**Merged pull requests:**
+
+- logrotate conf must be root:root [\#19](https://github.com/jhulten/pg_bouncer-cookbook/pull/19) ([jhulten](https://github.com/jhulten))
+
+## [v1.1.0](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.1.0) (2016-03-08)
+[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.0.3...v1.1.0)
 
 **Closed issues:**
 
@@ -9,7 +16,7 @@
 
 **Merged pull requests:**
 
-- Version pinning [\#18](https://github.com/jhulten/pg_bouncer-cookbook/pull/18) ([jhulten](https://github.com/jhulten))
+- version pinning. fixes \#14 [\#18](https://github.com/jhulten/pg_bouncer-cookbook/pull/18) ([jhulten](https://github.com/jhulten))
 - Kitchen testing [\#17](https://github.com/jhulten/pg_bouncer-cookbook/pull/17) ([jhulten](https://github.com/jhulten))
 
 ## [v1.0.3](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.0.3) (2016-01-27)
@@ -21,6 +28,7 @@
 
 **Merged pull requests:**
 
+- release v1.0.3 [\#8](https://github.com/jhulten/pg_bouncer-cookbook/pull/8) ([jhulten](https://github.com/jhulten))
 - Wrong parameters used in directory ownership [\#7](https://github.com/jhulten/pg_bouncer-cookbook/pull/7) ([jhulten](https://github.com/jhulten))
 
 ## [v1.0.2](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.0.2) (2016-01-27)
