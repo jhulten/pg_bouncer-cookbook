@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.2.0](https://github.com/jhulten/pg_bouncer-cookbook/tree/1.2.0) (2016-05-05)
+[Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.1.2...1.2.0)
+
+**Merged pull requests:**
+
+- fix misplaced alias/name in database definitions [\#21](https://github.com/jhulten/pg_bouncer-cookbook/pull/21) ([jhulten](https://github.com/jhulten))
+  WARNING: you will need to adjust your attributes to use the new version
+
 ## [v1.1.2](https://github.com/jhulten/pg_bouncer-cookbook/tree/v1.1.2) (2016-04-13)
 [Full Changelog](https://github.com/jhulten/pg_bouncer-cookbook/compare/v1.1.1...v1.1.2)
 
