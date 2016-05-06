@@ -45,8 +45,8 @@ describe 'pg_bouncer::configure' do
     let(:instance) do
       {
         databases: {
-          'dbname' => {
-            alias: 'dbalias',
+          'dbalias' => {
+            name: 'dbname',
             port: 1234
           }
         },
@@ -119,9 +119,9 @@ describe 'pg_bouncer::configure' do
     let(:instance) do
       {
         databases: {
-          'dbname' => {
+          'dbalias' => {
             host: '3.4.5.6',
-            alias: 'dbalias',
+            name: 'dbname',
             port: 1234
           }
         },
@@ -172,7 +172,7 @@ describe 'pg_bouncer::configure' do
       %r{^unix_socket_dir = /run/pgbouncer/db_sockets/$},
       /^auth_type = md4$/,
       %r{^auth_file = /etc/pgbouncer/userlist-test_instance.txt$},
-      /^dbalias = host='3.4.5.6' port=1234 dbname=dbname connect_query='CREATE TABLE Students;'$/,
+      /^dbalias = host=3.4.5.6 port=1234 dbname=dbname connect_query='CREATE TABLE Students;'$/,
       /^admin_users = pgbouncer_god$/,
       /^stats_users = pgbouncer_snitch$/,
       /^pool_mode = session$/,
