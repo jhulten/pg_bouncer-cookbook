@@ -1,0 +1,20 @@
+[Unit]
+Description="PgBouncer PostgreSQL connection pool for db alias <%= @name %>"
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/sbin/pgbouncer --daemon --quiet -R /etc/pgbouncer/pgbouncer-<%= @name %>.ini
+LimitNOFILE=<%= @instance['hard_limit'] %>
+PIDFile=<%= @instance['pid_dir'] %>/pgbouncer-<%= @name %>.pid
+Restart=on-failure
+RestartSec=5s
+StandardOutput=syslog
+SyslogFacility=local7
+SyslogIdentifier=pgbouncer-<%= @name %>
+SyslogLevel=debug
+TimeoutSec=110
+Type=forking
+User=<%= @user %>
+
+[Install]
+WantedBy=multi-user.target
