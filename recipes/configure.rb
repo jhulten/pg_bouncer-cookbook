@@ -35,7 +35,18 @@ directory '/etc/pgbouncer' do
   mode 0775
 end
 
+execute 'reload_systemd_manager' do
+  command 'systemctl daemon-reload'
+  action :nothing
+end
+
 node['pg_bouncer']['instances'].each do |name, inst|
+
+  execute "enable pgbouncer-#{name}" do
+    command "systemctl enable pgbouncer-#{name}@"
+    action :nothing
+  end
+
   # merge with instance_defaults
   inst = node['pg_bouncer']['instance_defaults'].merge(inst)
 
@@ -60,17 +71,19 @@ node['pg_bouncer']['instances'].each do |name, inst|
     'etc/pgbouncer/userlist.txt.erb',
     "/etc/pgbouncer/pgbouncer-#{name}.ini" =>
     'etc/pgbouncer/pgbouncer.ini.erb',
-    "/etc/init/pgbouncer-#{name}.conf" =>
-    'etc/init/pgbouncer.conf.erb'
+    "/etc/systemd/system/pgbouncer-#{name}@.service" =>
+    'etc/systemd/system/pgbouncer.service.erb'
   }.each do |key, source_template|
     template key.dup do
       source source_template
       owner node['pg_bouncer']['user']
       group node['pg_bouncer']['group']
-      mode 0644
+      mode 0440
       notifies :run, "execute[reload pgbouncer-#{name}]"
-      variables(name: name, instance: inst,
-                user: node['pg_bouncer']['user'], group: node['pg_bouncer']['group'])
+      variables(name: name, 
+                instance: inst,
+                user: node['pg_bouncer']['user'],
+                group: node['pg_bouncer']['group'])
     end
   end
 
@@ -81,17 +94,18 @@ node['pg_bouncer']['instances'].each do |name, inst|
     mode 0644
     variables(name: name, instance: inst,
               user: node['pg_bouncer']['user'], group: node['pg_bouncer']['group'])
+    notifies :run, resources(:execute => [ 'reload_systemd_manager' ])
+    notifies :run, resources(:execute => [ "enable pgbouncer-#{name}" ])
   end
 
   execute "reload pgbouncer-#{name}" do # ~FC004
-    command "service pgbouncer-#{name} reload || service pgbouncer-#{name} start"
+    command "service pgbouncer-#{name}@0 reload || service pgbouncer-#{name}@0 start"
     user 'root'
     action :nothing
     only_if { ::File.exist?("/etc/pgbouncer/pgbouncer-#{name}.ini") }
   end
 
-  service "pgbouncer-#{name}" do
-    provider Chef::Provider::Service::Upstart
+  service "pgbouncer-#{name}@0" do
     supports enable: true, start: true, restart: true, reload: true
     action inst['service_state']
   end
